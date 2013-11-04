@@ -36,7 +36,12 @@ insert into Members
 values('00000004', '444 Delta Drive Vancouver BC, V5Y 1S4', 'Douglas', 'Dobson', '7784444444', 000000, 'ddobs', 'dougie33', 1);
 insert into Members
 values('00000005', '555 Beta Drive Vancouver BC, V5Y 1S5', 'Ellie', 'Everett', '7785555555', 000025, 'eever', 'neverever44', 0);
-
+insert into Members
+values('00000006', '666 Epsilon Drive Vancouver BC, V5Y 1S6', 'Fanny', 'Frampton', '7781111111', 000000, 'ffanny', 'fanman55', 2);
+insert into Members
+values('00000007', '777 Zeta Drive Vancouver BC, V5Y 1S7', 'Gary', 'Gordon', '7782222222', 000000, 'ggordo', 'garment66', 2);
+insert into Members
+values('00000008', '888 Eta Drive Vancouver BC, V5Y 1S8', 'Harry', 'Hilton', '7782222222', 000000, 'hhilt', 'hillside77', 2);
 
 CREATE TABLE Librarians
 (
@@ -244,11 +249,11 @@ values('00000001', '10000001', '9780672327432');
 insert into Modifies
 values('00000002', '10000002', '9780672327454');
 insert into Modifies
-values('00000003', '10000003', '9780672327243');
+values('00000006', '10000006', '9780672327243');
 insert into Modifies
-values('00000004', '10000004', '9780672327433');
+values('00000007', '10000007', '9780672327433');
 insert into Modifies
-values('00000005', '10000005', '9780672327231');
+values('00000008', '10000008', '9780672327231');
 
 
 
