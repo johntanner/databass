@@ -20,19 +20,22 @@ first_name VARCHAR(10),
 last_name VARCHAR(10),
 phone_number CHAR(10),
 owing REAL,
+username VARCHAR(12),
+password VARCHAR(12),
+permissions int NOT NULL CHECK(permissions >= 0 and permissions <= 2),
 PRIMARY KEY (member_id)
 );
 
 insert into Members
-values('00000001', '111 Alpha Drive Vancouver BC, V5Y 1S1', 'Annie', 'Appleseed', '7781111111', 000000);
+values('00000001', '111 Alpha Drive Vancouver BC, V5Y 1S1', 'Annie', 'Appleseed', '7781111111', 000000, 'aapple', 'applepie00', 2);
 insert into Members
-values('00000002', '222 Beta Drive Vancouver BC, V5Y 1S2', 'Billy', 'Bedford', '7782222222', 000000);
+values('00000002', '222 Beta Drive Vancouver BC, V5Y 1S2', 'Billy', 'Bedford', '7782222222', 000000, 'bbedfo', 'bedframe11', 2);
 insert into Members
-values('00000003', '333 Gamma Drive Vancouver BC, V5Y 1S3', 'Connie', 'Chang', '7783333333', 000124);
+values('00000003', '333 Gamma Drive Vancouver BC, V5Y 1S3', 'Connie', 'Chang', '7783333333', 000124, 'cchang', 'changeling22', 1);
 insert into Members
-values('00000004', '444 Delta Drive Vancouver BC, V5Y 1S4', 'Douglas', 'Dobson', '7784444444', 000000);
+values('00000004', '444 Delta Drive Vancouver BC, V5Y 1S4', 'Douglas', 'Dobson', '7784444444', 000000, 'ddobs', 'dougie33', 1);
 insert into Members
-values('00000005', '555 Beta Drive Vancouver BC, V5Y 1S5', 'Ellie', 'Everett', '7785555555', 000025);
+values('00000005', '555 Beta Drive Vancouver BC, V5Y 1S5', 'Ellie', 'Everett', '7785555555', 000025, 'eever', 'neverever44', 0);
 
 
 CREATE TABLE Librarians
@@ -48,11 +51,11 @@ values('00000001', '10000001');
 insert into Librarians
 values('00000002', '10000002');
 insert into Librarians
-values('00000003', '10000003');
+values('00000006', '10000006');
 insert into Librarians
-values('00000004', '10000004');
+values('00000007', '10000007');
 insert into Librarians
-values('00000005', '10000005');
+values('00000008', '10000008');
 
 
 CREATE TABLE Branch
