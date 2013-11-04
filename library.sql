@@ -239,13 +239,14 @@ FOREIGN KEY (isbn) REFERENCES Has_Books ON DELETE CASCADE
 insert into Modifies
 values('00000001', '10000001', '9780672327432');
 insert into Modifies
-values('00000002', '10000002', '9780672327564');
+values('00000002', '10000002', '9780672327454');
 insert into Modifies
-values('00000003', '10000003', '9780672327245');
+values('00000003', '10000003', '9780672327243');
 insert into Modifies
-values('00000004', '10000004', '9780672327436');
+values('00000004', '10000004', '9780672327433');
 insert into Modifies
 values('00000005', '10000005', '9780672327231');
+
 
 
 CREATE TABLE Reserved_On
