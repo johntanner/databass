@@ -5,7 +5,8 @@ drop table Rental_Due_On CASCADE CONSTRAINTS;
 drop table Book_Copy CASCADE CONSTRAINTS;
 drop table Renews CASCADE CONSTRAINTS;
 drop table Makes_Reservation_Or_Rental CASCADE CONSTRAINTS;
-drop table Modifies CASCADE CONSTRAINTS;
+drop table Adds_Or_Modifies CASCADE CONSTRAINTS;
+drop table Deletes CASCADE CONSTRAINTS;
 drop table Has_Books CASCADE CONSTRAINTS;
 drop table Time_Period CASCADE CONSTRAINTS;
 drop table Reservation_For CASCADE CONSTRAINTS;
@@ -244,15 +245,15 @@ FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
 FOREIGN KEY (isbn) REFERENCES Has_Books ON DELETE CASCADE
 );
 
-insert into Modifies
+insert into Adds_Or_Modifies
 values('00000001', '10000001', '9780672327432');
-insert into Modifies
+insert into Adds_Or_Modifies
 values('00000002', '10000002', '9780672327454');
-insert into Modifies
+insert into Adds_Or_Modifies
 values('00000006', '10000006', '9780672327243');
-insert into Modifies
+insert into Adds_Or_Modifies
 values('00000007', '10000007', '9780672327433');
-insert into Modifies
+insert into Adds_Or_Modifies
 values('00000008', '10000008', '9780672327231');
 
 
@@ -266,15 +267,15 @@ FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
 FOREIGN KEY (isbn) REFERENCES Has_Books ON DELETE CASCADE
 );
 
-insert into Modifies
+insert into Deletes
 values('00000001', '10000001', '9780672327432');
-insert into Modifies
+insert into Deletes
 values('00000002', '10000002', '9780672327454');
-insert into Modifies
+insert into Deletes
 values('00000006', '10000006', '9780672327243');
-insert into Modifies
+insert into Deletes
 values('00000007', '10000007', '9780672327433');
-insert into Modifies
+insert into Deletes
 values('00000008', '10000008', '9780672327231');
 
 
