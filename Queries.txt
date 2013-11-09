@@ -1,0 +1,20 @@
+Selection and projection query: 
+
+
+Join query: 
+
+
+Division query:
+
+
+Aggregation query:
+
+
+Nested aggregation with group-by:
+
+
+Delete operation:
+
+
+Update operation:
+
