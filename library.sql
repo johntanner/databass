@@ -234,7 +234,7 @@ insert into Makes_Reservation_Or_Rental
 values('00000005', '0000000005', '0000000005');
 
 
-CREATE TABLE Modifies
+CREATE TABLE Adds_Or_Modifies
 (
 member_id CHAR(8),
 employee_id CHAR(8),
@@ -255,6 +255,27 @@ values('00000007', '10000007', '9780672327433');
 insert into Modifies
 values('00000008', '10000008', '9780672327231');
 
+
+CREATE TABLE Deletes
+(
+member_id CHAR(8),
+employee_id CHAR(8),
+isbn CHAR(13),
+PRIMARY KEY (member_id, employee_id),
+FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
+FOREIGN KEY (isbn) REFERENCES Has_Books ON DELETE CASCADE
+);
+
+insert into Modifies
+values('00000001', '10000001', '9780672327432');
+insert into Modifies
+values('00000002', '10000002', '9780672327454');
+insert into Modifies
+values('00000006', '10000006', '9780672327243');
+insert into Modifies
+values('00000007', '10000007', '9780672327433');
+insert into Modifies
+values('00000008', '10000008', '9780672327231');
 
 
 CREATE TABLE Reserved_On
