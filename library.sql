@@ -1,6 +1,6 @@
 drop table Members CASCADE CONSTRAINTS;
 drop table Librarians CASCADE CONSTRAINTS;
-drop table Branch CASCADE CONSTRAINTS;
+drop table branches CASCADE CONSTRAINTS;
 drop table Rental_Due_On CASCADE CONSTRAINTS;
 drop table Book_Copy CASCADE CONSTRAINTS;
 drop table Renews CASCADE CONSTRAINTS;
@@ -64,24 +64,24 @@ insert into Librarians
 values('00000008', '10000008');
 
 
-CREATE TABLE Branch
+CREATE TABLE branches
 (    
-branch_id CHAR(4),
+branches_id CHAR(4),
 name CHAR(30),
 city CHAR(20),
 province CHAR(5),
-PRIMARY KEY (branch_id)
+PRIMARY KEY (branches_id)
 );
 
-insert into Branch
+insert into branches
 values('0001', 'Grouse Public Library', 'Vancouver', 'BC');
-insert into Branch
+insert into branches
 values('0002', 'Seymour Public Library', 'Vancouver', 'BC');
-insert into Branch
+insert into branches
 values('0003', 'Cypress Public Library', 'Vancouver', 'BC');
-insert into Branch
+insert into branches
 values('0004', 'Cathedral Public Library', 'Vancouver', 'BC');
-insert into Branch
+insert into branches
 values('0005', 'Coliseum Public Library', 'Vancouver', 'BC');
 
 
@@ -107,50 +107,59 @@ values('23-Oct-13', '05-Nov-13');
 CREATE TABLE Has_Books 
 (
 isbn CHAR(13),
+branches_id CHAR(4),
 publisher CHAR(35),
 title CHAR(40),
 author CHAR(20),
-branch_id CHAR(4) NOT NULL,
-PRIMARY KEY (isbn),
-FOREIGN KEY (branch_id) REFERENCES Branch ON DELETE CASCADE
+PRIMARY KEY (isbn, branches_id),
+FOREIGN KEY (branches_id) REFERENCES branches ON DELETE CASCADE
 );
 
 insert into Has_Books
-values('9780672327432', 'Apple Publishing', 'Win In 20 Days', 'Jimmy Johnson', '0001');
+values('9780672327231', '0001', 'Apple Publishing', 'Win In 20 Days', 'Jimmy Johnson');
 insert into Has_Books
-values('9780672327231', 'Banana Publishing', 'Lose In 10 Days', 'Kimberly Kant', '0002');
+values('9780672327232', '0002', 'Banana Publishing', 'Lose In 10 Days', 'Kimberly Kant');
 insert into Has_Books
-values('9780672327454', 'Carrot Publishing', 'How To Win Or Lose', 'Loretta Louis', '0003');
+values('9780672327454', '0003', 'Carrot Publishing', 'How To Win Or Lose', 'Loretta Louis');
 insert into Has_Books
-values('9780672327243', 'Durian Publishing', 'Winning Is Not Everything', 'Marlene Mayall', '0004');
+values('9780672327243', '0004', 'Durian Publishing', 'Winning Is Not Everything', 'Marlene Mayall');
 insert into Has_Books
-values('9780672327433', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness', '0005');
-
+values('9780672327433', '0001', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+insert into Has_Books
+values('9780672327433', '0002', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+insert into Has_Books
+values('9780672327433', '0003', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+insert into Has_Books
+values('9780672327433', '0004', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+insert into Has_Books
+values('9780672327433', '0005', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
 
 CREATE TABLE Book_Copy
 (
 copy_id CHAR(4),
 isbn CHAR(13),
+branches_id CHAR(4),
 PRIMARY KEY (copy_id, isbn),
-FOREIGN KEY (isbn) REFERENCES Has_Books ON DELETE CASCADE
+FOREIGN KEY (isbn, branches_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
 insert into Book_Copy
-values('0001', '9780672327432');
+values('0001', '9780672327231', '0001');
 insert into Book_Copy
-values('0002', '9780672327231');
+values('0002', '9780672327232', '0002');
 insert into Book_Copy
-values('0001', '9780672327454');
+values('0001', '9780672327454', '0003');
 insert into Book_Copy
-values('0004', '9780672327243');
+values('0004', '9780672327243', '0004');
 insert into Book_Copy
-values('0012', '9780672327433');
+values('0012', '9780672327433', '0005');
 
 
 CREATE TABLE Rental_Due_On
 (	
 copy_id CHAR(4),
 isbn CHAR(13),
+branches_id CHAR(4),
 start_date DATE,
 end_date DATE,
 rental_id CHAR(10) NOT NULL,
@@ -160,15 +169,15 @@ FOREIGN KEY (copy_id, isbn) REFERENCES Book_Copy ON DELETE CASCADE
 );
 
 insert into Rental_Due_On
-values('0001', '9780672327432', '19-Oct-13', '01-Nov-13', '0000000001');
+values('0001', '9780672327231', '0001', '19-Oct-13', '01-Nov-13', '0000000001');
 insert into Rental_Due_On
-values('0002', '9780672327231', '20-Oct-13', '02-Nov-13', '0000000002');
+values('0002', '9780672327232', '0002', '20-Oct-13', '02-Nov-13', '0000000002');
 insert into Rental_Due_On
-values('0001', '9780672327454', '21-Oct-13', '03-Nov-13', '0000000003');
+values('0001', '9780672327454', '0003', '21-Oct-13', '03-Nov-13', '0000000003');
 insert into Rental_Due_On
-values('0004', '9780672327243', '22-Oct-13', '04-Nov-13', '0000000004');
+values('0004', '9780672327243', '0004', '22-Oct-13', '04-Nov-13', '0000000004');
 insert into Rental_Due_On
-values('0012', '9780672327433', '23-Oct-13', '05-Nov-13', '0000000005');
+values('0012', '9780672327433', '0005', '23-Oct-13', '05-Nov-13', '0000000005');
 
 
 CREATE TABLE Renews
@@ -196,20 +205,21 @@ CREATE TABLE Reservation_For
 (
 reservation_id CHAR(10),
 isbn CHAR(13),
+branches_id CHAR(4),
 PRIMARY KEY (reservation_id),
-FOREIGN KEY (isbn) REFERENCES Has_Books
+FOREIGN KEY (isbn, branches_id) REFERENCES Has_Books
 );
 
 insert into Reservation_For
-values('0000000001', '9780672327432');
+values('0000000001', '9780672327231', '0001');
 insert into Reservation_For
-values('0000000002', '9780672327231');
+values('0000000002', '9780672327232', '0002');
 insert into Reservation_For
-values('0000000003', '9780672327454');
+values('0000000003', '9780672327454', '0003');
 insert into Reservation_For
-values('0000000004', '9780672327243');
+values('0000000004', '9780672327243', '0004');
 insert into Reservation_For
-values('0000000005', '9780672327433');
+values('0000000005', '9780672327433', '0005');
 
 
 CREATE TABLE Makes_Reservation_Or_Rental
@@ -240,21 +250,22 @@ CREATE TABLE Adds_Or_Modifies
 member_id CHAR(8),
 employee_id CHAR(8),
 isbn CHAR(13),
+branches_id CHAR(4),
 PRIMARY KEY (member_id, employee_id),
 FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
-FOREIGN KEY (isbn) REFERENCES Has_Books ON DELETE CASCADE
+FOREIGN KEY (isbn, branches_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
 insert into Adds_Or_Modifies
-values('00000001', '10000001', '9780672327432');
+values('00000001', '10000001', '9780672327231', '0001');
 insert into Adds_Or_Modifies
-values('00000002', '10000002', '9780672327454');
+values('00000008', '10000008', '9780672327232', '0002');
+insert into Adds_Or_Modifies	
+values('00000002', '10000002', '9780672327454', '0003');
 insert into Adds_Or_Modifies
-values('00000006', '10000006', '9780672327243');
+values('00000006', '10000006', '9780672327243', '0004');
 insert into Adds_Or_Modifies
-values('00000007', '10000007', '9780672327433');
-insert into Adds_Or_Modifies
-values('00000008', '10000008', '9780672327231');
+values('00000007', '10000007', '9780672327433', '0005');
 
 
 CREATE TABLE Deletes
@@ -262,21 +273,23 @@ CREATE TABLE Deletes
 member_id CHAR(8),
 employee_id CHAR(8),
 isbn CHAR(13),
+branches_id CHAR(4),
 PRIMARY KEY (member_id, employee_id),
 FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
-FOREIGN KEY (isbn) REFERENCES Has_Books ON DELETE CASCADE
+FOREIGN KEY (isbn, branches_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
 insert into Deletes
-values('00000001', '10000001', '9780672327432');
+values('00000001', '10000001', '9780672327231', '0001');
 insert into Deletes
-values('00000002', '10000002', '9780672327454');
+values('00000008', '10000008', '9780672327232', '0002');
 insert into Deletes
-values('00000006', '10000006', '9780672327243');
+values('00000002', '10000002', '9780672327454', '0003');
 insert into Deletes
-values('00000007', '10000007', '9780672327433');
+values('00000006', '10000006', '9780672327243', '0004');
 insert into Deletes
-values('00000008', '10000008', '9780672327231');
+values('00000007', '10000007', '9780672327433', '0005');
+
 
 
 CREATE TABLE Reserved_On
