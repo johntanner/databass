@@ -1,16 +1,25 @@
 Selection and projection query: 
-What books do I have checked out?
+What are the titles of the books that the user with username aapple has checked out?
 
-select title
-from Makes_Reservation_or_Rental M, Rental_Due_On R, Has_Books, Members
-where M.rental_id = R.rental_id and Members.member_id = M.member_id and Has_Books.isbn = R.isbn and Members.username = [username];
+SELECT title
+FROM Makes_Reservation_or_Rental mror, Rental_Due_On r, Has_Books h, Members m
+WHERE mror.rental_id = r.rental_id AND m.member_id = mror.member_id AND h.isbn = r.isbn AND m.username = 'aapple';
 
 
 Join query: 
 
 
 Division query:
+What are the titles of the books that are at all branches?
 
+SELECT DISTINCT h1.title
+FROM Has_Books h1
+WHERE NOT EXISTS (SELECT NULL
+				          FROM Branches b
+				          WHERE NOT EXISTS (SELECT NULL
+				   				FROM Has_Books h2
+				   				WHERE h1.isbn=h2.isbn AND b.branch_id=h2.branch_id))
+ORDER BY h1.title ASC;
 
 Aggregation query:
 
