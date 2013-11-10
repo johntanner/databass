@@ -1,4 +1,9 @@
 Selection and projection query: 
+What books do I have checked out?
+
+select title
+from Makes_Reservation_or_Rental M, Rental_Due_On R, Has_Books, Members
+where M.rental_id = R.rental_id and Members.member_id = M.member_id and Has_Books.isbn = R.isbn and Members.username = [username];
 
 
 Join query: 
@@ -18,10 +23,5 @@ Delete operation:
 
 Update operation:
 
+
 Selection Query: 
-What books do I have checked out?
-
-select title
-from Makes_Reservation_or_Rental M, Rental_Due_On R, Has_Books, Members
-where M.rental_id = R.rental_id AND Members.member_id = M.member_id AND Has_Books.isbn = R.isbn AND Members.username = [username];
-
