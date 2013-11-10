@@ -66,11 +66,11 @@ values('00000008', '10000008');
 
 CREATE TABLE branches
 (    
-branches_id CHAR(4),
+branch_id CHAR(4),
 name CHAR(30),
 city CHAR(20),
 province CHAR(5),
-PRIMARY KEY (branches_id)
+PRIMARY KEY (branch_id)
 );
 
 insert into branches
@@ -107,12 +107,12 @@ values('23-Oct-13', '05-Nov-13');
 CREATE TABLE Has_Books 
 (
 isbn CHAR(13),
-branches_id CHAR(4),
+branch_id CHAR(4),
 publisher CHAR(35),
 title CHAR(40),
 author CHAR(20),
-PRIMARY KEY (isbn, branches_id),
-FOREIGN KEY (branches_id) REFERENCES branches ON DELETE CASCADE
+PRIMARY KEY (isbn, branch_id),
+FOREIGN KEY (branch_id) REFERENCES branches ON DELETE CASCADE
 );
 
 insert into Has_Books
@@ -138,9 +138,9 @@ CREATE TABLE Book_Copy
 (
 copy_id CHAR(4),
 isbn CHAR(13),
-branches_id CHAR(4),
+branch_id CHAR(4),
 PRIMARY KEY (copy_id, isbn),
-FOREIGN KEY (isbn, branches_id) REFERENCES Has_Books ON DELETE CASCADE
+FOREIGN KEY (isbn, branch_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
 insert into Book_Copy
@@ -159,7 +159,7 @@ CREATE TABLE Rental_Due_On
 (	
 copy_id CHAR(4),
 isbn CHAR(13),
-branches_id CHAR(4),
+branch_id CHAR(4),
 start_date DATE,
 end_date DATE,
 rental_id CHAR(10) NOT NULL,
@@ -205,9 +205,9 @@ CREATE TABLE Reservation_For
 (
 reservation_id CHAR(10),
 isbn CHAR(13),
-branches_id CHAR(4),
+branch_id CHAR(4),
 PRIMARY KEY (reservation_id),
-FOREIGN KEY (isbn, branches_id) REFERENCES Has_Books
+FOREIGN KEY (isbn, branch_id) REFERENCES Has_Books
 );
 
 insert into Reservation_For
@@ -250,10 +250,10 @@ CREATE TABLE Adds_Or_Modifies
 member_id CHAR(8),
 employee_id CHAR(8),
 isbn CHAR(13),
-branches_id CHAR(4),
+branch_id CHAR(4),
 PRIMARY KEY (member_id, employee_id),
 FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
-FOREIGN KEY (isbn, branches_id) REFERENCES Has_Books ON DELETE CASCADE
+FOREIGN KEY (isbn, branch_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
 insert into Adds_Or_Modifies
@@ -273,10 +273,10 @@ CREATE TABLE Deletes
 member_id CHAR(8),
 employee_id CHAR(8),
 isbn CHAR(13),
-branches_id CHAR(4),
+branch_id CHAR(4),
 PRIMARY KEY (member_id, employee_id),
 FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
-FOREIGN KEY (isbn, branches_id) REFERENCES Has_Books ON DELETE CASCADE
+FOREIGN KEY (isbn, branch_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
 insert into Deletes
