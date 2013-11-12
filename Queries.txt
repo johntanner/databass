@@ -1,7 +1,7 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Selection and projection query
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-What are the titles of the books that the user with username aapple has checked out?
+What are the titles of the books that the user with username aapple has checked out? (by username)
 
 (SELECT title
 FROM Makes_Reservation_or_Rental mror, Rental_Due_On r, Has_Books h, Members m
@@ -12,7 +12,11 @@ WHERE mror.rental_id = r.rental_id AND m.member_id = mror.member_id AND h.isbn =
 Join query
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Pick one query of this category.
+What books due I have overdue? (by username)
+
+select h.title
+from Makes_Reservation_Or_Rental mror, Members m, Rental_Due_On r, Has_Books h
+where mror.rental_id = r.rental_id AND m.member_id = mror.member_id AND r.isbn = h.isbn AND r.end_date < (select CURRENT_TIMESTAMP from DUAL) AND m.username = 'aapple';
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
