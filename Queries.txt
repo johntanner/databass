@@ -65,6 +65,20 @@ Delete operation
 
 Implement a cascade-on-delete situation
 
+Delete rental by rental_id:
+
+delete from Rental_Due_On
+where rental_id = '0000000001';
+
+
+Delete rental once book has been returned by member:
+
+delete from Rental_Due_On
+where rental_id in (select rental_id
+from Makes_Reservation_Or_Rental
+where member_id = '00000001');
+
+
 ###################################################################################################################
 
 *******************************************************************************************************************
