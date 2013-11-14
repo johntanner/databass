@@ -133,6 +133,17 @@ insert into Has_Books
 values('9780672327433', '0004', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
 insert into Has_Books
 values('9780672327433', '0005', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+insert into Has_Books
+values('9780672327231', '0001', 'Apple Publishing', 'Win In 20 Days', 'Jimmy Johnson');
+insert into Has_Books
+values('9780672327232', '0001', 'Banana Publishing', 'Lose In 10 Days', 'Kimberly Kant');
+insert into Has_Books
+values('9780672327454', '0001', 'Carrot Publishing', 'How To Win Or Lose', 'Loretta Louis');
+insert into Has_Books
+values('9780672327243', '0001', 'Durian Publishing', 'Winning Is Not Everything', 'Marlene Mayall');
+insert into Has_Books
+values('9780672327243', '0002', 'Durian Publishing', 'Winning Is Not Everything', 'Marlene Mayall');
+
 
 CREATE TABLE Book_Copy
 (
