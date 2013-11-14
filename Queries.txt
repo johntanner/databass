@@ -42,6 +42,12 @@ Aggregation query
 
 Pick one query that requires the use of aggregation (min, max, average, or count are all fine).
 
+How many copies of book X does branch Y have?
+
+SELECT COUNT(*)
+FROM Book_Copy c, Has_Books b
+WHERE c.isbn = b.isbn AND b.title = X AND c.branch_id = Y
+
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
