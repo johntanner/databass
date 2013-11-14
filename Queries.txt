@@ -57,6 +57,14 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 Pick one query that finds the average for each group
 and then finds either the minimum or maximum across all those averages.
 
+Unfinished!!!
+number of unique books per branch:
+
+select COUNT(distinct h.isbn), b.name
+  2  from Has_Books h, branches b
+  3  where h.branch_id = b.branch_id
+  4  group by b.name;
+
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 ###################################################################################################################
