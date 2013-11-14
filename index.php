@@ -15,39 +15,24 @@
 
     <!-- Custom styles for this template -->
     <link href="custom/css/signin.css" rel="stylesheet">
-
     <script src="js/jquery-1.10.2.js"></script>
-
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
   </head>
 
   <body>
 
     <div class="container">
 
-      <form class="form-signin">
+      <form method="POST" action="login.php" class="form-signin">
         <h2 class="form-signin-heading">Please sign in</h2>
-        <input type="text" class="form-control" placeholder="Email address" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" required>
+        <input type="text" name="email" class="form-control" placeholder="Email address" required autofocus>
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      </form>
+      </form>      
 
-      <form class="form-signin">
+<!--       <form method="POST" action="check-account.php" class="form-signin">
           <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in As Guest</button>
       </form>
+ -->    </div> <!-- /container -->
 
-    </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
   </body>
 </html>
