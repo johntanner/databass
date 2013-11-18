@@ -95,4 +95,22 @@ Update operation:
 
 Implement a constraint using the check statement
 
+update Members
+set owing = 5.5
+where member_id = '00000002';
+
+update Members
+set owing = -5.5
+where member_id = '00000002'; (violates check constraint)
+
+update Members
+set username = 'a20'
+where member_id = '00000001'; (violates check constraint)
+  
+update Members
+set username = 'aapple99' 
+where member_id = '00000001';
+
+Similar check constraint added in library.sql for password length
+
 *******************************************************************************************************************
