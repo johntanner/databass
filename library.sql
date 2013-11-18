@@ -21,10 +21,11 @@ first_name VARCHAR(10),
 last_name VARCHAR(10),
 phone_number CHAR(10),
 owing REAL,
-username VARCHAR(12),
+username VARCHAR(12) UNIQUE,
 password VARCHAR(12),
 permissions int NOT NULL CHECK(permissions >= 0 and permissions <= 2),
-PRIMARY KEY (member_id)
+PRIMARY KEY (member_id),
+CHECK (owing >= 0 AND LENGTH(username) >= 4 AND LENGTH(password) >= 8)
 );
 
 insert into Members
@@ -165,7 +166,7 @@ values('0012', '9780672327433', '0005');
 
 
 CREATE TABLE Rental_Due_On
-(	
+(        
 copy_id CHAR(4),
 isbn CHAR(13),
 branch_id CHAR(4),
@@ -190,7 +191,7 @@ values('0012', '9780672327433', '0005', '23-Oct-13', '05-Nov-13', '0000000005');
 
 
 CREATE TABLE Renews
-(	
+(        
 member_id CHAR(8),
 rental_id CHAR(10),
 PRIMARY KEY (member_id, rental_id), 
@@ -269,7 +270,7 @@ insert into Adds_Or_Modifies
 values('00000001', '10000001', '9780672327231', '0001');
 insert into Adds_Or_Modifies
 values('00000008', '10000008', '9780672327232', '0002');
-insert into Adds_Or_Modifies	
+insert into Adds_Or_Modifies        
 values('00000002', '10000002', '9780672327454', '0003');
 insert into Adds_Or_Modifies
 values('00000006', '10000006', '9780672327243', '0004');
@@ -302,7 +303,7 @@ values('00000007', '10000007', '9780672327433', '0005');
 
 
 CREATE TABLE Reserved_On
-(	
+(        
 member_id CHAR(8),
 start_date DATE,
 end_date DATE,
