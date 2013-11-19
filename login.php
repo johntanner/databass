@@ -93,13 +93,55 @@
 			<h2><small>Please search for a book using ISBN number</small></h2>
 			<form method="POST" action="book-search.php" class="form-inline">
 		        <div class="form-group"><input type="text" name="book-search-text" class="form-control" placeholder="9780672327231" required autofocus></div>
-	<!-- 			<select name="book-search-option">
+	 			<select name="book-search-option">
 					  <option>ISBN</option>
 					  <option>Title</option>
-					</select>
-	-->			<button class="btn btn-primary btn-large" id="search-books-btn">Search</button>
+				</select>
+				<input type="hidden" name="member_uname" value= <?php echo $username; ?> >
+		        <input type="hidden" name="member_id" value= <?php echo $row["MEMBER_ID"][0]; ?> >
+				<button class="btn btn-primary btn-large" id="search-books-btn">Search</button>
 			</form>
 		</div>
+	<hr>
+		<!-- Below DIV for overdue books -->
+
+		<div class="jumbotron text-center list-overdue-books" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
+			<div class='list-overdue'>
+				<h2><small>List All My Overdue Books</small></h2>
+				<form class="form-inline">
+					<input type="hidden" name="member_uname" value= <?php echo $username; ?> >
+			        <input type="hidden" name="member_id" value= <?php echo $row["MEMBER_ID"][0]; ?> >
+					<button class="btn btn-primary btn-large btn-list-overdue">List Overdue Books</button>
+				</form>
+			</div>
+			<div id='od-list-final' style="display:none;">
+				<button class="btn btn-default" id='close-btn-list-overdue' style="float:right;"><span class="glyphicon glyphicon-remove"></span></button>
+				<h3 style="color:#428bca;">Book Titles Past Overdue<h3>
+				<div id="actual-list"></div>
+			</div>
+		</div>
+		<!-- End of DIV for checked out books -->
+
+	<hr>
+
+	<!-- Below DIV for checked out books -->
+		<div class="jumbotron text-center list-checked-out-books" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
+			<div class='list-checked-out'>
+				<h2><small>List All My Checked Out Books</small></h2>
+				<form class="form-inline">
+					<input type="hidden" name="member_uname" value= <?php echo $username; ?> >
+			        <input type="hidden" name="member_id" value= <?php echo $row["MEMBER_ID"][0]; ?> >
+					<button class="btn btn-primary btn-large btn-list-checked-out">List Checked Out Books</button>
+				</form>
+			</div>
+			<div id='co-list-final' style="display:none;">
+				<button class="btn btn-default" id='close-btn-list-checked-out' style="float:right;"><span class="glyphicon glyphicon-remove"></span></button>
+				<h3 style="color:#428bca;">Book Titles Checked Out<h3>
+				<div id="actual-list-co"></div>
+			</div>
+		</div>
+	<!-- End of DIV -->
+
 			<?php } else { ?>
 			<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
 				<h3> Invalid Login Credentials. Please press back and try again. </h3>
@@ -109,7 +151,122 @@
 			</div>
 			<?php } ?>
 
-</div> <!-- End of container div-->
 
+	<script type="text/javascript">
+
+	//This script block is only for checked out books
+		$('.btn-list-checked-out').click(function(){
+			event.preventDefault();
+			var username = $("input[name='member_uname']").val();
+
+			//Ajax query to get all books overdue for the user
+			$.ajax({
+      			url: 'get_checked_out_books.php',
+      			type: 'POST',
+      			dataType: 'json',
+      			data: { 'username': username},
+      			success: function(data,status) {
+      				if (data.status == "ok"){
+	      				var title = data.TITLE;
+
+		      			//Empty DIV's for overdue books first 
+      					$('#actual-list-co','#co-list-final').empty();
+
+		      			$('.list-checked-out','.list-checked-out-books').fadeOut(500, function(){
+		      				if(title.length >= 1){
+		      					for (var i = 0; i < title.length; i++) {
+			      					$book_title = "<h4>" + title[i] + "</h4>";
+			      					$('#actual-list-co','#co-list-final').append($book_title);
+			      				};
+		      				}
+		      				else {
+		      					$no_items_overdue = "<h4>No Items Checked Out :)</h4>";
+		      					$('#actual-list-co','#co-list-final').append($no_items_overdue);
+		      				}
+			      			$('#co-list-final','.list-checked-out-books').fadeIn(500);
+		      			});
+	      				}
+      				else {
+      					alert("Sorry, there was on error is processing your request :(. Please Try again.");
+      				}
+      			},
+      			error: function(xhr, desc, err){
+  					alert("Sorry, there was on error is processing your request :(. Please Try again.");
+      				console.log("Reached error during ajax fetching of list checked out books");
+      			}
+      		});
+      	});
+
+		$('#close-btn-list-checked-out').click(function(event){
+			event.preventDefault();
+
+			//Reverse above FadeOut and FadeIn
+			$('#co-list-final','.list-checked-out-books').fadeOut(500,function(){
+				$('.list-checked-out','.list-checked-out-books').fadeIn(500);
+			});
+		});
+
+	</script>
+
+
+
+	<script type="text/javascript">
+
+	//This script block is only for overdue books
+		$('.btn-list-overdue').click(function(){
+			event.preventDefault();
+			var username = $("input[name='member_uname']").val();
+			var member_id = $("input[name='member_id']").val();
+
+			//Ajax query to get all books overdue for the user
+			$.ajax({
+      			url: 'get_overdue_books.php',
+      			type: 'POST',
+      			dataType: 'json',
+      			data: { 'username': username, 'id' : member_id},
+      			success: function(data,status) {
+      				if (data.status == "ok"){
+	      				var title = data.TITLE;
+
+		      			//Empty DIV's first
+      					$('#actual-list','#od-list-final').empty();
+
+		      			$('.list-overdue','.list-overdue-books').fadeOut(500, function(){
+		      				if(title.length >= 1){
+		      					for (var i = 0; i < title.length; i++) {
+			      					$book_title = "<h4>" + title[i] + "</h4>";
+			      					$('#actual-list','#od-list-final').append($book_title);
+			      				};
+		      				}
+		      				else {
+		      					$no_items_overdue = "<h4>No Items Past Overdue :)</h4>";
+		      					$('#actual-list','#od-list-final').append($no_items_overdue);
+		      				}
+			      			$('#od-list-final','.list-overdue-books').fadeIn(500);
+		      			});
+	      				}
+      				else {
+      					alert("Sorry, there was on error is processing your request :(. Please Try again.");
+      				}
+      			},
+      			error: function(xhr, desc, err){
+  					alert("Sorry, there was on error is processing your request :(. Please Try again.");
+      				console.log("Reached error during ajax fetching of list overdue");
+      			}
+      		});
+      	});
+
+		$('#close-btn-list-overdue').click(function(event){
+			event.preventDefault();
+
+			//Reverse above
+			$('#od-list-final','.list-overdue-books').fadeOut(500,function(){
+				$('.list-overdue','.list-overdue-books').fadeIn(500);
+			});
+		});
+
+	</script>
+
+</div> <!-- End of container div-->
 </body>
 </html>
