@@ -42,12 +42,14 @@
 				$username = $_POST["member_uname"];
 				$member_id = $_POST['member_id'];
 
-                //Converting branch name into branch ID
-				$branch_location_id = executePlainSQL("select branch_id from branches where name='". $book_search_location ."'");
-				oci_fetch_all($branch_location_id, $branch);
-				$branch_location_id = $branch["BRANCH_ID"][0];
-				var_dump ($branch_location_id);
 
+				if($book_search_location <> 'All Branches'){
+
+	                //Converting branch name into branch ID
+					$branch_location_id = executePlainSQL("select branch_id from branches where name='". $book_search_location ."'");
+					oci_fetch_all($branch_location_id, $branch);
+					$branch_location_id = $branch["BRANCH_ID"][0];
+				}
 
 
 
