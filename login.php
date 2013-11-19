@@ -97,6 +97,14 @@
 					  <option>ISBN</option>
 					  <option>Title</option>
 				</select>
+				<select name="book-search-location">
+					  <option>All Branches</option>
+					  <option>Grouse Public Library</option>
+					  <option>Seymour Public Library</option>
+					  <option>Cypress Public Library</option>
+					  <option>Cathedral Public Library</option>
+					  <option>Coliseum Public Library</option>
+				</select>
 				<input type="hidden" name="member_uname" value= <?php echo $username; ?> >
 		        <input type="hidden" name="member_id" value= <?php echo $row["MEMBER_ID"][0]; ?> >
 				<button class="btn btn-primary btn-large" id="search-books-btn">Search</button>

@@ -35,10 +35,21 @@
 		<?php 
 
 			if($db_conn){			
+		//		var_dump ($_POST);
 				$book_search_text  =  $_POST["book-search-text"]; //This is actually the ISBN number or title
 				$book_search_option  =  $_POST["book-search-option"]; //This is the book search option (title or ISBN)
+				$book_search_location = $_POST["book-search-location"]; //This is the book search location (Specific Branch, or All Branches)
 				$username = $_POST["member_uname"];
 				$member_id = $_POST['member_id'];
+
+                //Converting branch name into branch ID
+				$branch_location_id = executePlainSQL("select branch_id from branches where name='". $book_search_location ."'");
+				oci_fetch_all($branch_location_id, $branch);
+				$branch_location_id = $branch["BRANCH_ID"][0];
+				var_dump ($branch_location_id);
+
+
+
 
 				if($book_search_option == 'ISBN'){ //Book Search Option is ISBN number
 					$tuple = array (
@@ -47,13 +58,38 @@
 					$alltuples = array (
 						$tuple
 					);
-					$result = executeBoundSQL("select * from has_books where isbn=:isbn", $alltuples);
-				} 
-				else { //Book Search option is title
-
-					$query_string = "select * from has_books hb where hb.title like '%" . $book_search_text . "%'";
-					$result = executePlainSQL($query_string);
+					if($book_search_location == 'All Branches'){
+							$result = executeBoundSQL("select * from has_books where isbn=:isbn", $alltuples);
+						}	
+					else{
+						$result = executeBoundSQL("select * from has_books where isbn=:isbn AND branch_id=" .$branch_location_id ."", $alltuples);
+					}
 				}
+
+				else { //Book Search option is title
+					if($book_search_location == 'All Branches'){
+						$query_string = "select * from has_books hb where hb.title like '%" . $book_search_text . "%'";
+						$result = executePlainSQL($query_string);
+					}
+					else{
+						$query_string = "select * from has_books hb where hb.title like '%" . $book_search_text . "%' AND branch_id=" .$branch_location_id ."";
+						$result = executePlainSQL($query_string);						
+					}
+				}
+
+				
+
+				// else if($book_search_option == 'ISBN') {
+				// 	$tuple = array (
+				// 	":isbn" => $book_search_text
+				// 	);
+				// 	$alltuples = array (
+				// 		$tuple
+				// 	);
+				// 	$result = executeBoundSQL("select * from has_books where isbn=:isbn AND ", $alltuples);
+				// }
+
+
 
 				oci_fetch_all($result, $row);
 				
@@ -126,7 +162,7 @@
 				var $isbn= "<dt>ISBN </dt><dd>" + data.ISBN +"</dd>";
 				var $title = "<dt>Title </dt><dd>" + data.Title +"</dd>";
 				var $author= "<dt>Author </dt><dd>" + data.Author +"</dd>";
-				// var $branch_id_row = "<td>" + data.Branch_ID +"</td>";
+				var $branch_id_row = "<dt>Branch ID </dt><dd>" + data.Branch_ID +"</dd>";
 				var $publisher = "<dt>Publisher </dt><dd>" + data.Publisher +"</dd>";
 				var $reserved;
 				
@@ -139,7 +175,7 @@
 					// $reserved = '<dt>Status </dt><dd><button class="btn btn-primary btn-large reserved-books-btn">Available For Check Out</button></dd>';				
 					$reserved = '<dt>Status </dt><dd class="btn btn-primary reserved-books-btn" disabled="disabled">Available For Check Out</dd>';						
 				}
-				$ret_val = $isbn + $title + $author +  $publisher + $reserved;
+				$ret_val = $isbn + $title + $author + $publisher + $branch_id_row + $reserved;
 				return $ret_val;
 			}
 
