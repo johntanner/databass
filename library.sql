@@ -90,7 +90,8 @@ CREATE TABLE Time_Period
 (
 start_date DATE,
 end_date DATE,
-PRIMARY KEY (start_date, end_date)
+PRIMARY KEY (start_date, end_date),
+CHECK (start_date > end_date)
 );
 
 insert into Time_Period
@@ -175,7 +176,8 @@ end_date DATE,
 rental_id CHAR(10) NOT NULL,
 PRIMARY KEY (rental_id),
 FOREIGN KEY (start_date, end_date) REFERENCES Time_Period ON DELETE CASCADE,
-FOREIGN KEY (copy_id, isbn) REFERENCES Book_Copy ON DELETE CASCADE
+FOREIGN KEY (copy_id, isbn) REFERENCES Book_Copy ON DELETE CASCADE,
+CHECK (start_date > end_date)
 );
 
 insert into Rental_Due_On
@@ -309,7 +311,8 @@ start_date DATE,
 end_date DATE,
 PRIMARY KEY (start_date, end_date, member_id),
 FOREIGN KEY (member_id) REFERENCES Members ON DELETE CASCADE,
-FOREIGN KEY (start_date, end_date) REFERENCES Time_Period ON DELETE CASCADE
+FOREIGN KEY (start_date, end_date) REFERENCES Time_Period ON DELETE CASCADE,
+CHECK (start_date > end_date)
 );
 
 insert into Reserved_On
