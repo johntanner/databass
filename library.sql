@@ -11,7 +11,7 @@ drop table Has_Books CASCADE CONSTRAINTS;
 drop table Time_Period CASCADE CONSTRAINTS;
 drop table Reservation_For CASCADE CONSTRAINTS;
 drop table Reserved_On CASCADE CONSTRAINTS;
-drop table Returned_On CASCADE CONSTRAINTS;
+drop table Returns CASCADE CONSTRAINTS;
 
 
 CREATE TABLE Members 
@@ -293,8 +293,7 @@ employee_id CHAR(8),
 isbn CHAR(13),
 branch_id CHAR(4),
 PRIMARY KEY (member_id, employee_id),
-FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE 
-CASCADE,
+FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
 FOREIGN KEY (isbn, branch_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
@@ -357,18 +356,22 @@ insert into Reserved_On
 values('00000005', '23-Oct-13', '05-Nov-13');
 
 
-CREATE TABLE Returned_On
+CREATE TABLE Returns
 (        
 rental_id CHAR(10),
 returned_date DATE,
-PRIMARY KEY (rental_id, returned_date)
+copy_id CHAR(4),
+isbn CHAR(13),
+branch_id CHAR(4),
+PRIMARY KEY (rental_id, returned_date),
+FOREIGN KEY (copy_id, isbn, branch_id) REFERENCES Book_Copy ON DELETE CASCADE
 );
 
-insert into Returned_On
-values('0000000002', '01-Nov-13');
-insert into Returned_On
-values('0000000003', '01-Nov-13');
-insert into Returned_On
-values('0000000004', '02-Nov-13');
-insert into Returned_On
-values('0000000005', '02-Nov-13');
+insert into Returns
+values('0000000002', '01-Nov-13', '0002', '9780672327232', '0002');
+insert into Returns
+values('0000000003', '01-Nov-13', '0001', '9780672327454', '0003');
+insert into Returns
+values('0000000004', '02-Nov-13', '0004', '9780672327243', '0004');
+insert into Returns
+values('0000000005', '02-Nov-13', '0012', '9780672327433', '0005');
