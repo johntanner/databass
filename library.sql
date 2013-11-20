@@ -172,12 +172,14 @@ CREATE TABLE Book_Copy
 copy_id CHAR(4),
 isbn CHAR(13),
 branch_id CHAR(4),
-PRIMARY KEY (copy_id, isbn),
+PRIMARY KEY (copy_id, isbn, branch_id),
 FOREIGN KEY (isbn, branch_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
 insert into Book_Copy
 values('0001', '9780672327231', '0001');
+insert into Book_Copy
+values('0002', '9780672327232', '0001');
 insert into Book_Copy
 values('0002', '9780672327232', '0002');
 insert into Book_Copy
@@ -197,26 +199,22 @@ start_date DATE,
 due_date DATE,
 rental_id CHAR(10) NOT NULL,
 PRIMARY KEY (rental_id),
-FOREIGN KEY (start_date, due_date) REFERENCES Time_Period ON DELETE 
-CASCADE,
-FOREIGN KEY (copy_id, isbn) REFERENCES Book_Copy ON DELETE CASCADE
+FOREIGN KEY (start_date, due_date) REFERENCES Time_Period ON DELETE CASCADE,
+FOREIGN KEY (copy_id, isbn, branch_id) REFERENCES Book_Copy ON DELETE CASCADE
 );
 
 insert into Rental_Due_On
-values('0001', '9780672327231', '0001', '19-Oct-13', '01-Nov-13', 
-'0000000001');
+values('0001', '9780672327231', '0001', '19-Oct-13', '01-Nov-13', '0000000001');
 insert into Rental_Due_On
-values('0002', '9780672327232', '0002', '20-Oct-13', '02-Nov-13', 
-'0000000002');
+values('0002', '9780672327232', '0001', '19-Oct-13', '01-Nov-13', '0000000006');
 insert into Rental_Due_On
-values('0001', '9780672327454', '0003', '21-Oct-13', '03-Nov-13', 
-'0000000003');
+values('0002', '9780672327232', '0002', '20-Oct-13', '02-Nov-13', '0000000002');
 insert into Rental_Due_On
-values('0004', '9780672327243', '0004', '22-Oct-13', '04-Nov-13', 
-'0000000004');
+values('0001', '9780672327454', '0003', '21-Oct-13', '03-Nov-13', '0000000003');
 insert into Rental_Due_On
-values('0012', '9780672327433', '0005', '23-Oct-13', '05-Nov-13', 
-'0000000005');
+values('0004', '9780672327243', '0004', '22-Oct-13', '04-Nov-13', '0000000004');
+insert into Rental_Due_On
+values('0012', '9780672327433', '0005', '23-Oct-13', '05-Nov-13', '0000000005');
 
 
 CREATE TABLE Renews
@@ -252,6 +250,8 @@ FOREIGN KEY (isbn, branch_id) REFERENCES Has_Books
 insert into Reservation_For
 values('0000000001', '9780672327231', '0001');
 insert into Reservation_For
+values('0000000006', '9780672327232', '0001');
+insert into Reservation_For
 values('0000000002', '9780672327232', '0002');
 insert into Reservation_For
 values('0000000003', '9780672327454', '0003');
@@ -274,6 +274,8 @@ FOREIGN KEY (reservation_id) REFERENCES Reservation_For ON DELETE CASCADE
 
 insert into Makes_Reservation_Or_Rental
 values('00000001', '0000000001', '0000000001');
+insert into Makes_Reservation_Or_Rental
+values('00000001', '0000000006', '0000000006');
 insert into Makes_Reservation_Or_Rental
 values('00000002', '0000000002', '0000000002');
 insert into Makes_Reservation_Or_Rental
