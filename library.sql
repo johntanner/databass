@@ -11,6 +11,7 @@ drop table Has_Books CASCADE CONSTRAINTS;
 drop table Time_Period CASCADE CONSTRAINTS;
 drop table Reservation_For CASCADE CONSTRAINTS;
 drop table Reserved_On CASCADE CONSTRAINTS;
+drop table Returned_On CASCADE CONSTRAINTS;
 
 
 CREATE TABLE Members 
@@ -29,21 +30,29 @@ CHECK (owing >= 0 AND LENGTH(username) >= 4 AND LENGTH(password) >= 8)
 );
 
 insert into Members
-values('00000001', '111 Alpha Drive Vancouver BC, V5Y 1S1', 'Annie', 'Appleseed', '7781111111', 000000, 'aapple', 'applepie00', 2);
+values('00000001', '111 Alpha Drive Vancouver BC, V5Y 1S1', 'Annie', 
+'Appleseed', '7781111111', 000000, 'aapple', 'applepie00', 2);
 insert into Members
-values('00000002', '222 Beta Drive Vancouver BC, V5Y 1S2', 'Billy', 'Bedford', '7782222222', 000000, 'bbedfo', 'bedframe11', 2);
+values('00000002', '222 Beta Drive Vancouver BC, V5Y 1S2', 'Billy', 
+'Bedford', '7782222222', 000000, 'bbedfo', 'bedframe11', 2);
 insert into Members
-values('00000003', '333 Gamma Drive Vancouver BC, V5Y 1S3', 'Connie', 'Chang', '7783333333', 000124, 'cchang', 'changeling22', 1);
+values('00000003', '333 Gamma Drive Vancouver BC, V5Y 1S3', 'Connie', 
+'Chang', '7783333333', 000124, 'cchang', 'changeling22', 1);
 insert into Members
-values('00000004', '444 Delta Drive Vancouver BC, V5Y 1S4', 'Douglas', 'Dobson', '7784444444', 000000, 'ddobs', 'dougie33', 1);
+values('00000004', '444 Delta Drive Vancouver BC, V5Y 1S4', 'Douglas', 
+'Dobson', '7784444444', 000000, 'ddobs', 'dougie33', 1);
 insert into Members
-values('00000005', '555 Beta Drive Vancouver BC, V5Y 1S5', 'Ellie', 'Everett', '7785555555', 000025, 'eever', 'neverever44', 0);
+values('00000005', '555 Beta Drive Vancouver BC, V5Y 1S5', 'Ellie', 
+'Everett', '7785555555', 000025, 'eever', 'neverever44', 0);
 insert into Members
-values('00000006', '666 Epsilon Drive Vancouver BC, V5Y 1S6', 'Fanny', 'Frampton', '7781111111', 000000, 'ffanny', 'fanman55', 2);
+values('00000006', '666 Epsilon Drive Vancouver BC, V5Y 1S6', 'Fanny', 
+'Frampton', '7781111111', 000000, 'ffanny', 'fanman55', 2);
 insert into Members
-values('00000007', '777 Zeta Drive Vancouver BC, V5Y 1S7', 'Gary', 'Gordon', '7782222222', 000000, 'ggordo', 'garment66', 2);
+values('00000007', '777 Zeta Drive Vancouver BC, V5Y 1S7', 'Gary', 
+'Gordon', '7782222222', 000000, 'ggordo', 'garment66', 2);
 insert into Members
-values('00000008', '888 Eta Drive Vancouver BC, V5Y 1S8', 'Harry', 'Hilton', '7782222222', 000000, 'hhilt', 'hillside77', 2);
+values('00000008', '888 Eta Drive Vancouver BC, V5Y 1S8', 'Harry', 
+'Hilton', '7782222222', 000000, 'hhilt', 'hillside77', 2);
 
 
 CREATE TABLE Librarians
@@ -90,8 +99,8 @@ values('0005', 'Coliseum Public Library', 'Vancouver', 'BC');
 CREATE TABLE Time_Period
 (
 start_date DATE,
-end_date DATE,
-PRIMARY KEY (start_date, end_date)
+due_date DATE,
+PRIMARY KEY (start_date, due_date)
 );
 
 insert into Time_Period
@@ -118,31 +127,44 @@ FOREIGN KEY (branch_id) REFERENCES branches ON DELETE CASCADE
 );
 
 insert into Has_Books
-values('9780672327231', '0001', 'Apple Publishing', 'Win In 20 Days', 'Jimmy Johnson');
+values('9780672327231', '0001', 'Apple Publishing', 'Win In 20 Days', 
+'Jimmy Johnson');
 insert into Has_Books
-values('9780672327232', '0002', 'Banana Publishing', 'Lose In 10 Days', 'Kimberly Kant');
+values('9780672327232', '0002', 'Banana Publishing', 'Lose In 10 Days', 
+'Kimberly Kant');
 insert into Has_Books
-values('9780672327454', '0003', 'Carrot Publishing', 'How To Win Or Lose', 'Loretta Louis');
+values('9780672327454', '0003', 'Carrot Publishing', 'How To Win Or Lose', 
+'Loretta Louis');
 insert into Has_Books
-values('9780672327243', '0004', 'Durian Publishing', 'Winning Is Not Everything', 'Marlene Mayall');
+values('9780672327243', '0004', 'Durian Publishing', 'Winning Is Not 
+Everything', 'Marlene Mayall');
 insert into Has_Books
-values('9780672327433', '0001', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+values('9780672327433', '0001', 'Eggplant Publishing', 'Winning Really Is 
+Everything', 'Nigella Ness');
 insert into Has_Books
-values('9780672327433', '0002', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+values('9780672327433', '0002', 'Eggplant Publishing', 'Winning Really Is 
+Everything', 'Nigella Ness');
 insert into Has_Books
-values('9780672327433', '0003', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+values('9780672327433', '0003', 'Eggplant Publishing', 'Winning Really Is 
+Everything', 'Nigella Ness');
 insert into Has_Books
-values('9780672327433', '0004', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+values('9780672327433', '0004', 'Eggplant Publishing', 'Winning Really Is 
+Everything', 'Nigella Ness');
 insert into Has_Books
-values('9780672327433', '0005', 'Eggplant Publishing', 'Winning Really Is Everything', 'Nigella Ness');
+values('9780672327433', '0005', 'Eggplant Publishing', 'Winning Really Is 
+Everything', 'Nigella Ness');
 insert into Has_Books
-values('9780672327232', '0001', 'Banana Publishing', 'Lose In 10 Days', 'Kimberly Kant');
+values('9780672327232', '0001', 'Banana Publishing', 'Lose In 10 Days', 
+'Kimberly Kant');
 insert into Has_Books
-values('9780672327454', '0001', 'Carrot Publishing', 'How To Win Or Lose', 'Loretta Louis');
+values('9780672327454', '0001', 'Carrot Publishing', 'How To Win Or Lose', 
+'Loretta Louis');
 insert into Has_Books
-values('9780672327243', '0001', 'Durian Publishing', 'Winning Is Not Everything', 'Marlene Mayall');
+values('9780672327243', '0001', 'Durian Publishing', 'Winning Is Not 
+Everything', 'Marlene Mayall');
 insert into Has_Books
-values('9780672327243', '0002', 'Durian Publishing', 'Winning Is Not Everything', 'Marlene Mayall');
+values('9780672327243', '0002', 'Durian Publishing', 'Winning Is Not 
+Everything', 'Marlene Mayall');
 
 
 CREATE TABLE Book_Copy
@@ -172,23 +194,29 @@ copy_id CHAR(4),
 isbn CHAR(13),
 branch_id CHAR(4),
 start_date DATE,
-end_date DATE,
+due_date DATE,
 rental_id CHAR(10) NOT NULL,
 PRIMARY KEY (rental_id),
-FOREIGN KEY (start_date, end_date) REFERENCES Time_Period ON DELETE CASCADE,
+FOREIGN KEY (start_date, due_date) REFERENCES Time_Period ON DELETE 
+CASCADE,
 FOREIGN KEY (copy_id, isbn) REFERENCES Book_Copy ON DELETE CASCADE
 );
 
 insert into Rental_Due_On
-values('0001', '9780672327231', '0001', '19-Oct-13', '01-Nov-13', '0000000001');
+values('0001', '9780672327231', '0001', '19-Oct-13', '01-Nov-13', 
+'0000000001');
 insert into Rental_Due_On
-values('0002', '9780672327232', '0002', '20-Oct-13', '02-Nov-13', '0000000002');
+values('0002', '9780672327232', '0002', '20-Oct-13', '02-Nov-13', 
+'0000000002');
 insert into Rental_Due_On
-values('0001', '9780672327454', '0003', '21-Oct-13', '03-Nov-13', '0000000003');
+values('0001', '9780672327454', '0003', '21-Oct-13', '03-Nov-13', 
+'0000000003');
 insert into Rental_Due_On
-values('0004', '9780672327243', '0004', '22-Oct-13', '04-Nov-13', '0000000004');
+values('0004', '9780672327243', '0004', '22-Oct-13', '04-Nov-13', 
+'0000000004');
 insert into Rental_Due_On
-values('0012', '9780672327433', '0005', '23-Oct-13', '05-Nov-13', '0000000005');
+values('0012', '9780672327433', '0005', '23-Oct-13', '05-Nov-13', 
+'0000000005');
 
 
 CREATE TABLE Renews
@@ -263,7 +291,8 @@ employee_id CHAR(8),
 isbn CHAR(13),
 branch_id CHAR(4),
 PRIMARY KEY (member_id, employee_id),
-FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
+FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE 
+CASCADE,
 FOREIGN KEY (isbn, branch_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
@@ -286,7 +315,8 @@ employee_id CHAR(8),
 isbn CHAR(13),
 branch_id CHAR(4),
 PRIMARY KEY (member_id, employee_id),
-FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE CASCADE,
+FOREIGN KEY (member_id, employee_id) REFERENCES Librarians ON DELETE 
+CASCADE,
 FOREIGN KEY (isbn, branch_id) REFERENCES Has_Books ON DELETE CASCADE
 );
 
@@ -306,10 +336,11 @@ CREATE TABLE Reserved_On
 (        
 member_id CHAR(8),
 start_date DATE,
-end_date DATE,
-PRIMARY KEY (start_date, end_date, member_id),
+due_date DATE,
+PRIMARY KEY (start_date, due_date, member_id),
 FOREIGN KEY (member_id) REFERENCES Members ON DELETE CASCADE,
-FOREIGN KEY (start_date, end_date) REFERENCES Time_Period ON DELETE CASCADE
+FOREIGN KEY (start_date, due_date) REFERENCES Time_Period ON DELETE 
+CASCADE
 );
 
 insert into Reserved_On
@@ -322,3 +353,20 @@ insert into Reserved_On
 values('00000004', '22-Oct-13', '04-Nov-13');
 insert into Reserved_On
 values('00000005', '23-Oct-13', '05-Nov-13');
+
+
+CREATE TABLE Returned_On
+(        
+rental_id CHAR(10),
+returned_date DATE,
+PRIMARY KEY (rental_id, returned_date)
+);
+
+insert into Returned_On
+values('0000000002', '01-Nov-13');
+insert into Returned_On
+values('0000000003', '01-Nov-13');
+insert into Returned_On
+values('0000000004', '02-Nov-13');
+insert into Returned_On
+values('0000000005', '02-Nov-13');
