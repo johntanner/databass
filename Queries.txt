@@ -16,10 +16,10 @@ Join query
 
 What are the titles of the books that the user with username aaple has, that are overdue.
 
-(SELECT h.title
+(SELECT UNIQUE h.title
  FROM Makes_Reservation_Or_Rental mror, Members m, Rental_Due_On r, Has_Books h
- WHERE mror.rental_id = r.rental_id AND m.member_id = mror.member_id AND r.isbn = h.isbn
- AND r.end_date < (select CURRENT_TIMESTAMP from DUAL) AND m.username = 'aapple');
+ WHERE mror.rental_id = r.rental_id AND m.member_id = mror.member_id AND r.isbn = h.isbn AND m.username = 'aapple'
+ AND mror.rental_id NOT IN (select ro.rental_id from returned_on ro);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -46,11 +46,11 @@ Aggregation query
 
 Pick one query that requires the use of aggregation (min, max, average, or count are all fine).
 
-How many copies of book X does branch Y have?
+How many copies of the book with the title "Win In 20 Days" does branch 1 have?
 
 (SELECT COUNT(*)
  FROM Book_Copy c, Has_Books b
- WHERE c.isbn = b.isbn AND b.title = X AND c.branch_id = Y);
+ WHERE c.isbn = b.isbn AND b.title = 'Win In 20 Days' AND c.branch_id = '0001');
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -73,10 +73,8 @@ $$$$$$$$$$$$$$$$$$
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 ###################################################################################################################
-Delete operation
+Delete operation:
 ###################################################################################################################
-
-Implement a cascade-on-delete situation
 
 Delete rental by rental_id:
 
@@ -91,14 +89,11 @@ WHERE rental_id in (SELECT rental_id
 		    FROM Makes_Reservation_Or_Rental
 		    WHERE member_id = '00000001');
 
-
 ###################################################################################################################
 
 *******************************************************************************************************************
 Update operation:
 *******************************************************************************************************************
-
-Implement a constraint using the check statement
 
 UPDATE Members
 SET owing = 5.5
