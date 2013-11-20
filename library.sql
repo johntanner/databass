@@ -45,6 +45,7 @@ values('00000007', '777 Zeta Drive Vancouver BC, V5Y 1S7', 'Gary', 'Gordon', '77
 insert into Members
 values('00000008', '888 Eta Drive Vancouver BC, V5Y 1S8', 'Harry', 'Hilton', '7782222222', 000000, 'hhilt', 'hillside77', 2);
 
+
 CREATE TABLE Librarians
 (
 member_id CHAR(8),
@@ -65,7 +66,7 @@ insert into Librarians
 values('00000008', '10000008');
 
 
-CREATE TABLE branches
+CREATE TABLE Branches
 (    
 branch_id CHAR(4),
 name CHAR(30),
@@ -74,15 +75,15 @@ province CHAR(5),
 PRIMARY KEY (branch_id)
 );
 
-insert into branches
+insert into Branches
 values('0001', 'Grouse Public Library', 'Vancouver', 'BC');
-insert into branches
+insert into Branches
 values('0002', 'Seymour Public Library', 'Vancouver', 'BC');
-insert into branches
+insert into Branches
 values('0003', 'Cypress Public Library', 'Vancouver', 'BC');
-insert into branches
+insert into Branches
 values('0004', 'Cathedral Public Library', 'Vancouver', 'BC');
-insert into branches
+insert into Branches
 values('0005', 'Coliseum Public Library', 'Vancouver', 'BC');
 
 
@@ -90,8 +91,7 @@ CREATE TABLE Time_Period
 (
 start_date DATE,
 end_date DATE,
-PRIMARY KEY (start_date, end_date),
-CHECK (start_date > end_date)
+PRIMARY KEY (start_date, end_date)
 );
 
 insert into Time_Period
@@ -176,8 +176,7 @@ end_date DATE,
 rental_id CHAR(10) NOT NULL,
 PRIMARY KEY (rental_id),
 FOREIGN KEY (start_date, end_date) REFERENCES Time_Period ON DELETE CASCADE,
-FOREIGN KEY (copy_id, isbn) REFERENCES Book_Copy ON DELETE CASCADE,
-CHECK (start_date > end_date)
+FOREIGN KEY (copy_id, isbn) REFERENCES Book_Copy ON DELETE CASCADE
 );
 
 insert into Rental_Due_On
@@ -303,7 +302,6 @@ insert into Deletes
 values('00000007', '10000007', '9780672327433', '0005');
 
 
-
 CREATE TABLE Reserved_On
 (        
 member_id CHAR(8),
@@ -311,8 +309,7 @@ start_date DATE,
 end_date DATE,
 PRIMARY KEY (start_date, end_date, member_id),
 FOREIGN KEY (member_id) REFERENCES Members ON DELETE CASCADE,
-FOREIGN KEY (start_date, end_date) REFERENCES Time_Period ON DELETE CASCADE,
-CHECK (start_date > end_date)
+FOREIGN KEY (start_date, end_date) REFERENCES Time_Period ON DELETE CASCADE
 );
 
 insert into Reserved_On
