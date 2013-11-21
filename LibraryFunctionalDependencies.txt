@@ -1,0 +1,32 @@
+Library Functional Dependencies
+
+Members
+member_id -> owing, permissions
+
+Librarians
+employee_id -> member_id
+member_id -> employee_id
+
+Branches
+branch_id -> name, city, province
+
+Has_Books
+isbn -> title, author, publisher
+
+Book_Copy
+N/A
+
+Rental_Due_On
+rental_id -> start_date, due_date
+
+Makes_Rental
+rental_id -> member_id
+
+Renews
+rental_id -> member_id
+
+Reservation_For
+reservation_id -> isbn, branch_id
+
+Makes_Reservation
+reservation_id -> member_id
