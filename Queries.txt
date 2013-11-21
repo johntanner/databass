@@ -61,14 +61,18 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 Pick one query that finds the average for each group
 and then finds either the minimum or maximum across all those averages.
 
-$$$$$$$$$$$$$$$$$$
-|  UNFINISHED    |
-$$$$$$$$$$$$$$$$$$
+Copies of books for each ISBN at a given branch as a view. Then select isbn with the least number of copies from the view.
 
-(SELECT COUNT(distinct h.isbn), b.name
- FROM Has_Books h, branches b
- WHERE h.branch_id = b.branch_id
- GROUP BY b.name);
+create view copies_of_books(copies, isbn) as
+select count(bc.copy_id), bc.isbn
+from Book_Copy bc
+where bc.branch_id = '0001'
+group by bc.isbn;
+
+select isbn, copies
+from copies_of_books
+where copies = (select min(copies) from copies_of_books);
+
 
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
