@@ -10,16 +10,18 @@
 
 		//For Each ISBN, check whether or not the person has reserved it
 		$tuple = array (
-						":username" => $username,
+						":username" => $username
 					);
 
 		$alltuples = array (
 			$tuple
 		);
 
+		//Need to check branch ids are equal as well else duplicate books start showing up.
 		$result = executeBoundSQL("select h.title
-									from Makes_Reservation_Or_Rental mror, Members m, Rental_Due_On r, Has_Books h
-									where mror.rental_id = r.rental_id AND m.member_id = mror.member_id AND r.isbn = h.isbn AND r.end_date < (select CURRENT_TIMESTAMP from DUAL) AND m.username = :username",$alltuples);
+									from Makes_Rental mr, Members m, Rental_Due_On r, Has_Books h
+									where mr.rental_id = r.rental_id AND m.member_id = mr.member_id AND r.isbn = h.isbn AND r.branch_id = h.branch_id AND 
+									r.due_date < (select CURRENT_TIMESTAMP from DUAL) AND m.username = :username",$alltuples);
 
 		oci_fetch_all($result, $row);
 

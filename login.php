@@ -87,15 +87,20 @@
 	</h2>
 
 	<hr>
+	
+	<!-- Show Balance Owing -->
 	<h3>Balance Owing : $<?php echo $row["OWING"][0] ?></h3>	
+	
 	<hr>
+
+	<!-- DIV for searching books -->
 		<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
 			<h2><small>Please search for a book using ISBN number</small></h2>
 			<form method="POST" action="book-search.php" class="form-inline">
-		        <div class="form-group"><input type="text" name="book-search-text" class="form-control" placeholder="9780672327231" required autofocus></div>
+		        <div class="form-group"><input type="text" name="book-search-text" class="form-control" placeholder="Win In 20 Days" required autofocus></div>
 	 			<select name="book-search-option">
-					  <option>ISBN</option>
 					  <option>Title</option>
+  					  <option>ISBN</option>
 				</select>
 				<select name="book-search-location">
 					  <option>All Branches</option>
@@ -109,30 +114,11 @@
 		        <input type="hidden" name="member_id" value= <?php echo $row["MEMBER_ID"][0]; ?> >
 				<button class="btn btn-primary btn-large" id="search-books-btn">Search</button>
 			</form>
+			<p style="color:brown;"><small>Note: For listing all books, just enter " "(1 space) in the search box and select Title from dropdown</small></p>
 		</div>
-	<hr>
-		<!-- Below DIV for overdue books -->
+	<!-- End of DIV for searching books  -->
 
-		<div class="jumbotron text-center list-overdue-books" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
-			<div class='list-overdue'>
-				<h2><small>List All My Overdue Books</small></h2>
-				<form class="form-inline">
-					<input type="hidden" name="member_uname" value= <?php echo $username; ?> >
-			        <input type="hidden" name="member_id" value= <?php echo $row["MEMBER_ID"][0]; ?> >
-					<button class="btn btn-primary btn-large btn-list-overdue">List Overdue Books</button>
-				</form>
-			</div>
-			<div id='od-list-final' style="display:none;">
-				<button class="btn btn-default" id='close-btn-list-overdue' style="float:right;"><span class="glyphicon glyphicon-remove"></span></button>
-				<h3 style="color:#428bca;">Book Titles Past Overdue<h3>
-				<div id="actual-list"></div>
-			</div>
-		</div>
-		<!-- End of DIV for checked out books -->
-
-	<hr>
-
-	<!-- Below DIV for checked out books -->
+	<!-- Start DIV for checked out books -->
 		<div class="jumbotron text-center list-checked-out-books" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
 			<div class='list-checked-out'>
 				<h2><small>List All My Checked Out Books</small></h2>
@@ -148,7 +134,73 @@
 				<div id="actual-list-co"></div>
 			</div>
 		</div>
-	<!-- End of DIV -->
+	<!-- End of DIV for checked out books -->
+
+	<!-- Start DIV for overdue books -->
+	<div class="jumbotron text-center list-overdue-books" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
+		<div class='list-overdue'>
+			<h2><small>List All My Overdue Books</small></h2>
+			<form class="form-inline">
+				<input type="hidden" name="member_uname" value= <?php echo $username; ?> >
+		        <input type="hidden" name="member_id" value= <?php echo $row["MEMBER_ID"][0]; ?> >
+				<button class="btn btn-primary btn-large btn-list-overdue">List Overdue Books</button>
+			</form>
+		</div>
+		<div id='od-list-final' style="display:none;">
+			<button class="btn btn-default" id='close-btn-list-overdue' style="float:right;"><span class="glyphicon glyphicon-remove"></span></button>
+			<h3 style="color:#428bca;">Book Titles Past Overdue<h3>
+			<div id="actual-list"></div>
+		</div>
+	</div>
+	<!-- End of DIV for checked out books -->
+
+
+	<!-- Code for Librarians (permission 1) AND DBA's (permission 1). The below code only gets executed if the member has enough permissions. First, check if permissions are appropriate-->
+	<?php if ($row["PERMISSIONS"][0] == '1' || $row["PERMISSIONS"][0] == '0') :?>  
+			
+			<!-- Start of DIV for listing the number of copies of a particular book at a particular branch -->
+			<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
+				<h3> List Number of Book Copies AT a Branch </h3>
+				<form method="POST" action="list-copy-by-branch.php" class="form-inline">
+			        <div class="form-group"><input type="text" name="book-search-text" class="form-control" placeholder="Win In 20 Days" required autofocus></div>
+					<select name="book-search-location">
+						  <option>Grouse Public Library</option>
+						  <option>Seymour Public Library</option>
+						  <option>Cypress Public Library</option>
+						  <option>Cathedral Public Library</option>
+						  <option>Coliseum Public Library</option>
+					</select>
+					<button class="btn btn-primary btn-large" id="list-count-books-btn">List Count</button>
+				</form>				
+			</div>
+			<!-- Start of DIV for listing the number of copies of a particular book at a particular branch -->
+
+			<!-- Start of DIV for Delete From Rentals_due_on with Cascade -->
+			<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
+				<h3> Delete Rental Information After Book Return</h3>
+				<form method="POST" action="delete_rental_information.php" class="form-inline">
+					<!-- Delete Rental Due on by entering rental id -->
+			        <div class="form-group"><input type="text" name="rental-delete-query-text" class="form-control" placeholder="Enter Rental ID e.g. 1" required autofocus></div>
+					<button class="btn btn-danger btn-large" id="delete-rental-information-button">DELETE</button>
+				</form>				
+			</div>
+			<!-- End of DIV for Delete From Rentals_due_on with Cascade -->
+
+			<?php if ($row["PERMISSIONS"][0] == '1') : ?>
+				<!-- Start of DIV for Delete From Employees  -->
+				<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
+					<h3> Delete Librarian</h3>
+					<form method="POST" action="delete_employee.php" class="form-inline">
+						<!-- Delete Employee by entering rental id -->
+				        <div class="form-group"><input type="text" name="employee-delete-query-text" class="form-control" placeholder="e.g. 10000001" required autofocus></div>
+						<button class="btn btn-danger btn-large" id="delete-employee-information-button">DELETE</button>
+					</form>				
+				</div>
+				<!-- End of DIV for Delete From Rentals_due_on with Cascade -->
+
+			<?php endif; ?>
+	<?php endif; ?>
+	<!-- End of Code for Librarians (permission 1) AND DBA's (permission 1). -->
 
 			<?php } else { ?>
 			<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
@@ -159,7 +211,7 @@
 			</div>
 			<?php } ?>
 
-
+<!-- Begin of Script for listing checked-out books -->
 	<script type="text/javascript">
 
 	//This script block is only for checked out books
@@ -215,12 +267,11 @@
 		});
 
 	</script>
+<!-- End of Script for listing checked out books -->
 
-
-
+<!-- Begin of Script for listing overdue books -->
 	<script type="text/javascript">
 
-	//This script block is only for overdue books
 		$('.btn-list-overdue').click(function(){
 			event.preventDefault();
 			var username = $("input[name='member_uname']").val();
@@ -274,6 +325,7 @@
 		});
 
 	</script>
+<!-- End of Script for listing overdue books -->
 
 </div> <!-- End of container div-->
 </body>
