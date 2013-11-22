@@ -56,6 +56,42 @@
 
 		$count = $row["COUNT(COPY_ID)"][0];
 
+		//Get Branches with minimum and maximum number of copies for the given book
+		//First get the ISBN number for the book
+		$query = "SELECT DISTINCT h.ISBN FROM Has_Books h WHERE h.title = '". $book_search_text ."'";
+		$result = executePlainSQL($query);
+		oci_fetch_all($result, $row);
+
+		$isbn = $row["ISBN"][0];
+
+		$view_query = "CREATE VIEW copies_of_books AS (
+						  SELECT bc.branch_id , COUNT(bc.copy_id) AS copy_count 
+						  FROM Book_Copy bc 
+						  WHERE bc.ISBN='" . $isbn . "'
+						  GROUP BY bc.branch_id )";
+
+		executePlainSQL($view_query);
+
+		$max_query = "SELECT c.branch_id, c.copy_count FROM copies_of_books c WHERE c.copy_count = (SELECT MAX(c1.copy_count) FROM copies_of_books c1)";
+		$min_query = "SELECT c.branch_id, c.copy_count FROM copies_of_books c WHERE c.copy_count = (SELECT MIN(c1.copy_count) FROM copies_of_books c1)";
+
+		$res_max_query = executePlainSQL($max_query);
+		$res_min_query = executePlainSQL($min_query);
+
+		oci_fetch_all($res_max_query, $max_copies); //Get branch id and number of copies for the branch with the most number of copies
+		oci_fetch_all($res_min_query, $min_copies); //Get branch id and number of copies for the branch with the least number of copies
+
+		//Get branch locations from the given branch_id's
+		$branch_loc_max = executePlainSQL("select b.name from branches b where b.branch_id=". $max_copies["BRANCH_ID"][0]);
+		$branch_loc_min = executePlainSQL("select b.name from branches b where b.branch_id=". $min_copies["BRANCH_ID"][0]);
+
+		oci_fetch_all($branch_loc_max, $branch_loc_max);
+		oci_fetch_all($branch_loc_min, $branch_loc_min);
+
+		$branch_with_max_copies = array("branch_loc" => $branch_loc_max["NAME"][0] , "copy_count" => $max_copies["COPY_COUNT"][0] );
+		$branch_with_min_copies = array("branch_loc" => $branch_loc_min["NAME"][0] , "copy_count" => $min_copies["COPY_COUNT"][0] );
+
+		executePlainSQL("DROP VIEW copies_of_books");
 		//Commit
 		logoff_oci();
 
@@ -79,6 +115,19 @@
         <h4>Number of Copies : <b><?php echo $count; ?></b></h4>
         	
         </div>
+
+        <div class="jumbotron text-center" style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px; background-color: #DDDDDD;">
+
+        <h3>Branch Location with maximum number of copies for <b><?php echo "'" . $book_search_text ."'"; ?></h3>
+        <h4><b><?php echo $branch_with_max_copies["branch_loc"]; ?></b> with <b>Copy Count : </b><?php echo $branch_with_max_copies["copy_count"]?></h4>
+
+        <hr>
+
+	    <h3>Branch Location with minimum number of copies for <b><?php echo "'" . $book_search_text ."'"; ?></h3>
+        <h4><b><?php echo $branch_with_min_copies["branch_loc"]; ?></b> with <b>Copy Count : </b><?php echo $branch_with_min_copies["copy_count"]?></h4>
+
+        </div>
+
 
 	</div> <!-- End of container div-->
 

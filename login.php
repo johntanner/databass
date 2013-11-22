@@ -157,10 +157,11 @@
 
 	<!-- Code for Librarians (permission 1) AND DBA's (permission 1). The below code only gets executed if the member has enough permissions. First, check if permissions are appropriate-->
 	<?php if ($row["PERMISSIONS"][0] == '1' || $row["PERMISSIONS"][0] == '0') :?>  
-			
+
 			<!-- Start of DIV for listing the number of copies of a particular book at a particular branch -->
 			<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
-				<h3> List Number of Book Copies AT a Branch </h3>
+				<h3> List Number of Book Copies AT a Branch</h3>
+				<h4> Note :  Also lists the branches with the maximum and minimum copies for the book (if they have any at all)</h4>
 				<form method="POST" action="list-copy-by-branch.php" class="form-inline">
 			        <div class="form-group"><input type="text" name="book-search-text" class="form-control" placeholder="Win In 20 Days" required autofocus></div>
 					<select name="book-search-location">
