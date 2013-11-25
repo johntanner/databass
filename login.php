@@ -13,11 +13,26 @@
     <title>Databass Library</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="custom/css/signin.css" rel="stylesheet">
     <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Only for select picker -->
+    <script type="text/javascript" src="css/selectpick/bootstrap-select.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/selectpick/bootstrap-select.css">
+    <script type="text/javascript">
+	    $(window).on('load', function () {
+
+	        $('.selectpicker').selectpicker({});
+	        // $('.selectpicker').selectpicker('hide');
+
+	        $('.search-input').tooltip({});
+	        $('#list-count-books-btn').tooltip({});
+	    });
+	</script>
 
     <!-- PHP Files for reporting errors and sql functions -->
     <?php 
@@ -97,12 +112,13 @@
 		<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
 			<h2><small>Please search for a book using ISBN number</small></h2>
 			<form method="POST" action="book-search.php" class="form-inline">
-		        <div class="form-group"><input type="text" name="book-search-text" class="form-control" placeholder="Win In 20 Days" required autofocus></div>
-	 			<select name="book-search-option">
+		        <div class="form-group"><input data-toggle="tooltip" data-placement="left" title data-original-title="For listing all books, just leave this blank" 
+		        		type="text" name="book-search-text" class="form-control search-input" placeholder="Win In 20 Days" autofocus></div>
+	 			<select name="book-search-option" class="selectpicker">
 					  <option>Title</option>
   					  <option>ISBN</option>
 				</select>
-				<select name="book-search-location">
+				<select name="book-search-location" class="selectpicker" data-live-search="true">
 					  <option>All Branches</option>
 					  <option>Grouse Public Library</option>
 					  <option>Seymour Public Library</option>
@@ -114,8 +130,8 @@
 		        <input type="hidden" name="member_id" value= <?php echo $row["MEMBER_ID"][0]; ?> >
 				<button class="btn btn-primary btn-large" id="search-books-btn">Search</button>
 			</form>
-			<p style="color:brown;"><small>Note: For listing all books, just enter " "(1 space) in the search box and select Title from dropdown</small></p>
-		</div>
+<!-- 			<p style="color:brown;"><small>Note: For listing all books, just enter " "(1 space) in the search box and select Title from dropdown</small></p>
+ -->		</div>
 	<!-- End of DIV for searching books  -->
 
 	<!-- Start DIV for checked out books -->
@@ -161,17 +177,18 @@
 			<!-- Start of DIV for listing the number of copies of a particular book at a particular branch -->
 			<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
 				<h3> List Number of Book Copies AT a Branch</h3>
-				<h4> Note :  Also lists the branches with the maximum and minimum copies for the book (if they have any at all)</h4>
-				<form method="POST" action="list-copy-by-branch.php" class="form-inline">
-			        <div class="form-group"><input type="text" name="book-search-text" class="form-control" placeholder="Win In 20 Days" required autofocus></div>
-					<select name="book-search-location">
+<!-- 				<h4> Note :  Also lists the branches with the maximum and minimum copies for the book (if they have any at all)</h4>
+ -->				<form method="POST" action="list-copy-by-branch.php" class="form-inline">
+			        <div class="form-group"><input type="text" name="book-search-text" class="form-control list-count-copies" placeholder="Win In 20 Days" required autofocus></div>
+					<select name="book-search-location" class="selectpicker" data-live-search="true">
 						  <option>Grouse Public Library</option>
 						  <option>Seymour Public Library</option>
 						  <option>Cypress Public Library</option>
 						  <option>Cathedral Public Library</option>
 						  <option>Coliseum Public Library</option>
 					</select>
-					<button class="btn btn-primary btn-large" id="list-count-books-btn">List Count</button>
+					<button class="btn btn-primary btn-large" id="list-count-books-btn" 
+    						 data-toggle="tooltip" data-placement="right" title data-original-title=" Note :  Also lists the branches with the maximum and minimum copies for the book (if they have any at all)">List Count</button>
 				</form>				
 			</div>
 			<!-- Start of DIV for listing the number of copies of a particular book at a particular branch -->
@@ -183,6 +200,20 @@
 					<!-- Delete Rental Due on by entering rental id -->
 			        <div class="form-group"><input type="text" name="rental-delete-query-text" class="form-control" placeholder="Enter Rental ID e.g. 1" required autofocus></div>
 					<button class="btn btn-danger btn-large" id="delete-rental-information-button">DELETE</button>
+				</form>				
+			</div>
+			<!-- End of DIV for Delete From Rentals_due_on with Cascade -->
+
+
+			<!-- Start of DIV for Update From Balance -->
+			<div class="jumbotron text-center" style="padding: 10px 10px 30px 10px; background-color: #DDDDDD;">
+				<h3> Check and Update Member's Overdue Balance</h3>
+				<form method="POST" action="edit-user-balance.php" class="form-inline">
+					<!-- Delete Rental Due on by entering rental id -->
+			        <div class="form-group"><input type="text" name="member-id-text" class="form-control" placeholder="e.g. 10000001" required autofocus></div>
+					<button class="btn btn-danger btn-large" id="delete-rental-information-button">UPDATE</button>
+					<input type="hidden" name="member_uname" value= <?php echo $username; ?> >
+	       			<input type="hidden" name="member_pwd" value= <?php echo $password; ?> >
 				</form>				
 			</div>
 			<!-- End of DIV for Delete From Rentals_due_on with Cascade -->
