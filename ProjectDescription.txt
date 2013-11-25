@@ -1,0 +1,5 @@
+In our project we modeled a database that a typical library system might use. There are two classes of users: librarians and library members. Library members are able to check out books and see what books they currently have on rental. They are also able to see their overdue books and any outstanding fines they might have for overdue rentals. Librarians are able to rent a book to a member and delete a member's rentals after the book has been returned. All users can search for available books at each branch and edit some of their personal information. Users must log in with a unique username and password before having access to any of the above features.
+
+Each library branch has multiple books and may have multiple copies of the same book. Each book is identified by its ISBN and copy number. When a user rents a book, a unique rental ID is associated with that rental.
+
+To model this system, we used the CS department's oracle database. We created the GUI using PHP and Twitter's Bootstrap front end framework. Typechecking is done at the application level with further checks at the database level.
