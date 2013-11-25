@@ -1,0 +1,15 @@
+Changes made to the schema:
+
+#1. We removed the Time_Period table because it was redundant with what we had in Rental_Due_On.
+
+#2. We added a branch_id attribute to the Has_Books table to be able to express that different branches could have books with the same ISBN number.
+
+#3. We added a branch_id attribute to the Book_Copy table because it has a foreign key constraint on (see #2).
+
+#4. We added a branch_id attribute to the Rental_Due_On table because it has a foreign key constraint on (see #2).
+
+#5. We added a branch_id attribute to the Reservation_For table because it has a foreign key constraint (see #2).
+
+#6. We removed the Modifies table because it was found to be unnecessary in expressing the required functionality.
+
+#7. We removed the Reserved_On table because it was found to be unnecessary in expressing the required functionality.
